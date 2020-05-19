@@ -1,6 +1,8 @@
 class ParkingController{
-	constructor(formNewClient){
+	constructor(formNewClient, tbodyClient){
 		this.formNewClient = document.getElementById(formNewClient);
+		this.tbodyClient = document.getElementById(tbodyClient);
+		
 		
 		this.onsubmit();
 	}
@@ -9,8 +11,32 @@ class ParkingController{
 		this.formNewClient.addEventListener("submit",(e)=>{
 			e.preventDefault();
 			let values = this.getValues(this.formNewClient);
-			console.log(values);
+			values.save();
+			this.formNewClient.reset();
+			this.addLineTable(values);
+			console.log(values.vehicle);
+			console.log(values.vehicle.make);
 		});
+	}
+	
+	addLineTable(values){
+		let tr = this.getTr(values);
+		this.tbodyClient.appendChild(tr);
+		
+	}
+	
+	getTr(dataClient, tr = null){
+		if(tr === null){
+            tr = document.createElement('tr');
+        } 
+        tr.dataset.client = JSON.stringify(dataClient);
+        tr.innerHTML =  `
+        <td>${dataClient.name + ' ' + dataClient.surname}</td>
+        <td>${dataClient.email}</td>
+		<td>${dataClient.adress}</td>
+		<td>${dataClient.city}</td>
+		<td>${Vehicle.format(dataClient.vehicle)}</td>`;
+        return tr;
 	}
 	
 	getValues(formNewClient){
