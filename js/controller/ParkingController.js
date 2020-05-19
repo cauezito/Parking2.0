@@ -1,6 +1,7 @@
 class ParkingController{
 	constructor(formNewClient){
 		this.formNewClient = document.getElementById(formNewClient);
+		
 		this.onsubmit();
 	}
 	
