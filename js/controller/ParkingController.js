@@ -66,11 +66,19 @@ class ParkingController{
 		let btnNewClient = document.querySelector("a#new-client");
 		let cardNewClient = document.querySelector("div#card-new-client");
 		let cardClients = document.querySelector("div#card-clients");
+		let closeNewClient = document.querySelector("a#close-new-client");
 
 		btnNewClient.addEventListener("click", () =>{
 			cardNewClient.classList.remove('hide');
 			cardClients.classList.remove('m12');
 			cardClients.classList.add('m6');
+		});
+		
+		closeNewClient.addEventListener("click", () => {
+			cardClients.classList.remove('m6');
+			cardClients.classList.add('m12');
+			cardNewClient.classList.add('hide')
+			this.formNewClient.reset();
 		});
 	}
 	

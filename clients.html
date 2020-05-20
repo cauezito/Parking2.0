@@ -27,8 +27,10 @@
     		<div class="col s12 m12" id="card-clients">
       			<div class="card">
         			<div class="card-content">
-          				<span class="card-title center-align">Clients</span>
-						<a href="#" id="new-client">Novo</a>
+          				<span class="card-title center-align">CLIENTS</span>
+						<a href="#" id="new-client"><span class="material-icons">
+add_circle
+</span></a>
           					<table class="striped centered responsive-table table-clients">
          						<thead>
           							<tr>
@@ -51,7 +53,12 @@
 			<div class="col s12 m6 hide" id="card-new-client">
       			<div class="card">
         			<div class="card-content ">
-          				<span class="card-title center-align">New client</span>
+						<a href="#" id="close-new-client">
+						<i class="material-icons md-36" style="float:right">
+						close</i>
+						</a>		
+						
+          				<span class="card-title center-align">CLIENT</span>
 
           					 <div class="row">
 							    <form class="col s12" id="form-new-client">
@@ -81,6 +88,7 @@
 							          <label for="email"></label>
 							        </div>
 							      </div>
+									<span class="card-title center-align">VEHICLE</span>
 								  <div class="row">
 							        <div class="input-field col s6">
 							          <input placeholder="License plate" id="licensePlate" name="licensePlate" type="text" class="validate">
