@@ -2,20 +2,18 @@ class ParkingController{
 	constructor(formNewClient, tbodyClient){
 		this.formNewClient = document.getElementById(formNewClient);
 		this.tbodyClient = document.getElementById(tbodyClient);
-		
-		
 		this.onsubmit();
+		this.addEvents();
+		this.listClients();
 	}
 	
 	onsubmit(){
 		this.formNewClient.addEventListener("submit",(e)=>{
 			e.preventDefault();
-			let values = this.getValues(this.formNewClient);
-			values.save();
+			let client = this.createClient(this.formNewClient);
+			client.save();
 			this.formNewClient.reset();
-			this.addLineTable(values);
-			console.log(values.vehicle);
-			console.log(values.vehicle.make);
+			this.addLineTable(client);
 		});
 	}
 	
@@ -39,22 +37,21 @@ class ParkingController{
         return tr;
 	}
 	
-	getValues(formNewClient){
-		let client = {};
-		let vehicle = {};
+	createClient(formNewClient){
+		let client = [];
+		let vehicle = [];
 		let isValid = true;
 		[...formNewClient.elements].forEach(function(field){
-			if(['name', 'surname', 'adress', 'city', 'email', 'license_plate',
+			if(['name', 'surname', 'adress', 'city', 'email', 'licensePlate',
 			'make', 'model', 'color'].indexOf(field.name)
 			 > -1 && !field.value){
 				field.classList.add('invalid');
 				isValid = false;
 			}   
-			if(['license_plate', 'make', 'model', 'color'].indexOf(field.name) 
+			if(['licensePlate', 'make', 'model', 'color'].indexOf(field.name) 
 			> -1 && field.value){
 				vehicle[field.name] = field.value;
-			}
-			
+			}			
 			client[field.name] = field.value;
 		});
 		
@@ -63,5 +60,28 @@ class ParkingController{
 		return new Client(
 			client.name, client.surname, client.email,
 		 	client.adress, client.city, vehicle);
+	}
+	
+	addEvents(){
+		let btnNewClient = document.querySelector("a#new-client");
+		let cardNewClient = document.querySelector("div#card-new-client");
+		let cardClients = document.querySelector("div#card-clients");
+
+		btnNewClient.addEventListener("click", () =>{
+			cardNewClient.classList.remove('hide');
+			cardClients.classList.remove('m12');
+			cardClients.classList.add('m6');
+		});
+	}
+	
+	
+	listClients(){
+		//let clients = Client.getClients();
+		let clients = JSON.parse(localStorage.getItem("clients"));
+			clients.forEach(dataClient => {
+				let client = new Client();				
+				client.loadFromJSON(dataClient);
+				this.addLineTable(client);
+			});
 	}
 }

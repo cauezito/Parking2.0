@@ -1,12 +1,15 @@
 class Client{
-	constructor(name, surname, email, adress, city, vehicle){
+	constructor(name, surname, email, adress, city, vehicle ){
 		//this._id;
 		this._name = name;
 		this._surname = surname;
 		this._email = email;
 		this._adress = adress;
 		this._city = city;
-		this._vehicle = new Vehicle(vehicle);
+		if(vehicle){
+			this._vehicle = new Vehicle(vehicle);
+		}
+		
 	}
 	
 	get name(){
@@ -57,6 +60,32 @@ class Client{
 		this._vehicle = vehicle;
 	}
 	
+	formatJSON(json){
+		for(let name in json){			
+			json = json.replace("_","");			
+		}
+		console.log(json);
+		return JSON.parse(json);
+	}
+	
+	loadFromJSON(json){		
+        for(let name in json){
+			switch(name){
+				case '_vehicle':
+					let vehicle = JSON.stringify(json[name]);
+					vehicle = this.formatJSON(vehicle);					
+					this._vehicle = new Vehicle(vehicle);
+				
+				break;
+				default:
+					this[name] = json[name];
+					
+			}
+		}     
+    }
+
+	
+
 	save(){
 		let clients = Client.getClients();
 		clients.push(this);
