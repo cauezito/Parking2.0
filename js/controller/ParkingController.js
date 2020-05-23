@@ -3,13 +3,11 @@ class ParkingController{
 		this.formNewClient = document.getElementById(formNewClient);
 		this.tbodyClient = document.getElementById(tbodyClient);
 		this.addEventsIndexPage();
-
 	}
 	
 	addLineTable(values){
 		let tr = this.getTr(values);
-		this.tbodyClient.appendChild(tr);
-		
+		this.tbodyClient.appendChild(tr);		
 	}
 	
 	getTr(dataClient, tr = null){
@@ -49,31 +47,6 @@ class ParkingController{
 		return new Client(
 			client.name, client.surname, client.email,
 		 	client.adress, client.city, vehicle);
-	}
-	
-	addEventsGlobal(){
-		let indexPage = document.querySelector("body#index-page");
-		let clientsPage = document.querySelector("body#clients-page");
-		console.log(indexPage)
-		console.log(clientsPage)
-		if(!indexPage == null){
-			indexPage.addEventListener("load", () => {
-				this.addEventsIndexPage();
-				console.log('oi')
-			});
-		}
-		
-		if(!clientsPage == null){
-			clientsPage.addEventListener("load", () => {
-				this.addEventsClientsPage();
-				console.log('oi')
-			});
-		}
-		
-		
-		
-		
-		
 	}
 	
 	addEventsClientsPage(){
@@ -122,19 +95,17 @@ class ParkingController{
 		closeNewEntry.addEventListener("click", () => {
 			cardEntry.classList.remove('m6');
 			cardEntry.classList.add('m12');
-			cardNewEntry.classList.add('hide')
+			cardNewEntry.classList.add('hide');
 		});
 	}
+	
 	listClients(){
-		//let clients = Client.getClients();
 		let clients = this.returnClients();
-			clients.forEach(dataClient => {
-				let client = new Client();				
-				client.loadFromJSON(dataClient);
-				console.log('entrou')
-				this.addLineTable(client);
-				
-			});
+		clients.forEach(dataClient => {
+			let client = new Client();				
+			client.loadFromJSON(dataClient);
+			this.addLineTable(client);				
+		});
 	}
 	
 	returnClients(){
@@ -142,56 +113,57 @@ class ParkingController{
 	}
 	
 	returnEntries(){
-		let entries = JSON.parse(localStorage.getItem("entries"));
-		if(!entries){
-			localStorage.setItem("entries");
-		}
+		let entries = JSON.parse(localStorage.getItem("entries"));	
 		return entries;
 	}
 	
-	clearSelect(idSelect){
-		let select = document.querySelector(idSelect);
+	addOption(idSelect, value) {
+    	let option = new Option(value, value);
+    	let select = document.getElementById(idSelect);
+    	select.add(option);
 	}
 	
 	listInfoNewEntry(){
 		let selectClient = document.querySelector("select#select-client");
-		let selectVehicle = document.querySelector("select#select-vehicle");
+		//let selectVehicle = document.querySelector("select#select-vehicle");
 		let clients = this.returnClients();
 		let entries = this.returnEntries();
 		let licensePlate = [];
-		let index = -1;
+		var index = -1;
 		
 		if(entries){
-			entries.forEach((data, i) =>{
+			for(let i in entries){			
 				licensePlate[i] = entries[i].licensePlate;
-			});
-		}
-		
-		if(entries){
-			clients.forEach((data, i) => {
-				if(licensePlate.indexOf(clients[i].licensePlate) === -1){
-					selectClient.append('<option value="'+ clients[i].name +'">' + 
-					clients[i].name +" " + clients[i].surname + '</option>');
-				} else {
-					selectClient.append('<option value="'+ clients[i].name +'">' +
-					clients[i].name + " " + clients[i].surname + '</option>'); 
+			}
+			
+			for(let i in clients){
+				if(licensePlate.indexOf(clients[i]._vehicle._licensePlate) === -1){
+					this.addOption("select-client", clients[i]._name);					
 				}
-			});
-		}		
-		
-		selectClient.addEventListener("blur", function() {
-        	selectedClient = selectClient.options[selectClient.selectedIndex].value;
-                clients.forEach((data, i) =>{
-					if(clients[i].name === selectedClient) {
+			}
+		}else{
+			for(let i in clients){
+				let fullName = clients[i]._name + " " + clients[i]._surname;
+				this.addOption("select-client", clients[i]._name, fullName);
+			}			
+		}
+		selectClient.addEventListener("blur", () => {
+        	let selectedClient = selectClient.options[selectClient.selectedIndex].value;
+               for(let i in clients){
+					if(clients[i]._name === selectedClient) {
                      index = i;
                   }
-				});
-				
+				}
 				this.clearSelect("select-vehicle");
-				
-				selectVehicle.append('<option value="'+ 
-				clients[index].model + '">' + clients[index].licensePlate +
-                " " + clients[index].make + '</option>');
-        });
+				this.addOption("select-vehicle", clients[index]._vehicle._licensePlate);				
+		}	
+	)};
+	
+	clearSelect(idSelect){
+		let select = document.getElementById(idSelect);			
+		let i, L = select.options.length - 1;
+	   	for(i = L; i >= 0; i--) {
+	      select.remove(i);
+	   	}
 	}
 }
