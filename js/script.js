@@ -1,5 +1,5 @@
 let parkingController = new ParkingController(
-	"form-new-client", "tbody-clients");
+	"form-new-client", "tbody-clients", "form-new-entry", "tbody-entries");
 
 
   document.addEventListener('DOMContentLoaded', function() {

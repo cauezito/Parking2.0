@@ -42,12 +42,7 @@
           							</tr>
 						        </thead>
 						        <tbody id="tbody-entries">
-						          <tr>
-						            <td>Alvin</td>
-						            <td>Fox - Awesome</td>
-						            <td>22:45</td>
-									<td></td>
-						          </tr>
+						         
 						        </tbody>
       						</table>
         			</div>        
@@ -64,15 +59,18 @@
 						</a>		
 						<span class="card-title center-align">NEW ENTRY</span>
 						<div class="input-field ">
-						<form>
-						  <select class="browser-default" id="select-client">
+						<form id="form-new-entry">
+						  <select class="browser-default" id="select-client" name="client">
 						    <option value="" disabled selected>Choose a client</option>
 						    
 						  </select> 
-						  <select class="browser-default" id="select-vehicle">
+						  <select class="browser-default" id="select-vehicle" name="vehicle">
 						    <option value="" disabled selected>Choose a vehicle</option>
 						    
-						  </select>            
+						  </select>    
+							<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+   								<i class="material-icons right">send</i>
+  							</button>   
 						</form>
   						</div>
         			</div>
@@ -84,6 +82,7 @@
 	  <script type="text/javascript" src="js/script.js"></script>
 	  <script type="text/javascript" src="js/models/Client.js"></script>
 	  <script type="text/javascript" src="js/models/Vehicle.js"></script>
+	  <script type="text/javascript" src="js/models/Entry.js"></script>
 
     </body>
   </html>

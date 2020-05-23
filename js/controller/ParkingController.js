@@ -1,8 +1,11 @@
 class ParkingController{
-	constructor(formNewClient, tbodyClient){
+	constructor(formNewClient, tbodyClient, formNewEntry, tbodyEntry){
 		this.formNewClient = document.getElementById(formNewClient);
 		this.tbodyClient = document.getElementById(tbodyClient);
+		this.formNewEntry = document.getElementById(formNewEntry);
+		this.tbodyEntry = document.getElementById(tbodyEntry);
 		this.addEventsIndexPage();
+		//this.addEventsClientsPage();
 	}
 	
 	addLineTable(values){
@@ -84,7 +87,7 @@ class ParkingController{
 		let cardEntry = document.querySelector("div#card-entry");
 		let cardNewEntry = document.querySelector("div#card-new-entry");
 		let closeNewEntry = document.querySelector("a#close-new-entry");
-		
+				
 		addNewEntry.addEventListener("click", () => {
 			cardEntry.classList.remove('m12')
 			cardEntry.classList.add('m6')
@@ -97,6 +100,33 @@ class ParkingController{
 			cardEntry.classList.add('m12');
 			cardNewEntry.classList.add('hide');
 		});
+		
+		this.formNewEntry.addEventListener("submit", (e) => {
+			e.preventDefault();
+			let entry = this.createEntry(this.formNewEntry);
+			//entry.save();
+		});
+	}
+	
+	createEntry(formNewEntry){
+		let dataUser = [];
+		let isValid = true;
+		[...formNewEntry.elements].forEach(function(field){
+			
+			/* validation
+			if(['select-client', 'select-vehicle'].indexOf(field.name)
+			 > -1 && field.value != 'Choose a client'){
+				field.classList.add('invalid');
+				isValid = false;
+			}   */
+			dataUser[field.name] = field.value;
+		});
+		
+		//if(!isValid) return false;
+		
+		let client = Client.getOneClient(dataUser.client);
+		console.log(client)
+		return new Entry(client);
 	}
 	
 	listClients(){
@@ -125,7 +155,6 @@ class ParkingController{
 	
 	listInfoNewEntry(){
 		let selectClient = document.querySelector("select#select-client");
-		//let selectVehicle = document.querySelector("select#select-vehicle");
 		let clients = this.returnClients();
 		let entries = this.returnEntries();
 		let licensePlate = [];

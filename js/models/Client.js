@@ -64,7 +64,6 @@ class Client{
 		for(let name in json){			
 			json = json.replace("_","");			
 		}
-		console.log(json);
 		return JSON.parse(json);
 	}
 	
@@ -84,8 +83,6 @@ class Client{
 		}     
     }
 
-	
-
 	save(){
 		let clients = Client.getClients();
 		clients.push(this);
@@ -98,5 +95,14 @@ class Client{
 			clients = JSON.parse(localStorage.getItem("clients"));
 		}
 		return clients;
+	}
+	
+	static getOneClient(nameClient){
+		let clients = this.getClients();
+		for(let i in clients){	
+			if(clients[i]._name === nameClient){
+				return clients[i];				
+			}
+		}		
 	}
 }
