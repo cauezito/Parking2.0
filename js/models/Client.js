@@ -1,12 +1,15 @@
 class Client{
 	constructor(client){
 		//this._id;
-		this._name = client.name;
-		this._surname = client.surname;
-		this._email = client.email;
-		this._adress = client.adress;
-		this._city = client.city;
-		this._vehicle = new Vehicle(client.vehicle);		
+		if(client){
+			this._name = client.name;
+			this._surname = client.surname;
+			this._email = client.email;
+			this._adress = client.adress;
+			this._city = client.city;
+			this._vehicle = new Vehicle(client.vehicle);		
+		}
+		
 	}
 	
 	get name(){
@@ -60,7 +63,7 @@ class Client{
 	loadFromJSON(json){		
         for(let name in json){
 			switch(name){
-				case '_vehicle':
+				case 'vehicle':
 					let vehicle = JSON.stringify(json[name]);
 					vehicle = Formatter.JSONFormat(vehicle);					
 					this._vehicle = new Vehicle(vehicle);

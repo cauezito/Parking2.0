@@ -7,26 +7,7 @@ class ParkingController{
 		this.addEventsIndexPage();
 		//this.addEventsClientsPage();
 	}
-	
-	addLineTable(values, tbody){
-		let tr = this.getTr(values);
-		tbody.appendChild(tr);		
-	}
-	
-	getTr(dataClient, tr = null){
-		if(tr === null){
-            tr = document.createElement('tr');
-        } 
-        tr.dataset.client = JSON.stringify(dataClient);
-        tr.innerHTML =  `
-        <td>${dataClient.name + ' ' + dataClient.surname}</td>
-        <td>${dataClient.email}</td>
-		<td>${dataClient.adress}</td>
-		<td>${dataClient.city}</td>
-		<td>${Vehicle.format(dataClient.vehicle)}</td>`;
-        return tr;
-	}
-	
+
 	createClient(formNewClient){
 		let client = [];
 		let vehicle = [];
@@ -38,18 +19,21 @@ class ParkingController{
 				field.classList.add('invalid');
 				isValid = false;
 			}   
-			/*if(['licensePlate', 'make', 'model', 'color'].indexOf(field.name) 
+			if(['licensePlate', 'make', 'model', 'color'].indexOf(field.name) 
 			> -1 && field.value){
 				vehicle[field.name] = field.value;
-			}*/		
+			}
+
 			client[field.name] = field.value;
 		});
 		
-		if(!isValid) return false;
 		
+		if(!isValid) return false;
+		client.vehicle = vehicle;
+		console.log(client)
 		return new Client(client);
 	}
-	
+
 	addEventsClientsPage(){
 		let btnNewClient = document.querySelector("a#new-client");
 		let cardNewClient = document.querySelector("div#card-new-client");
@@ -74,12 +58,13 @@ class ParkingController{
 		this.formNewClient.addEventListener("submit",(e)=>{
 			e.preventDefault();
 			let client = this.createClient(this.formNewClient);
+			console.log(client)
 			client.save();
 			this.formNewClient.reset();
-			this.addLineTable(client, this.tbodyClient);
+			this.addLineTableClient(client, this.tbodyClient);
 		});
 	}	
-	
+
 	addEventsIndexPage(){
 		let addNewEntry = document.querySelector("a#add-new-entry");
 		let cardEntry = document.querySelector("div#card-entry");
@@ -104,7 +89,8 @@ class ParkingController{
 			let entry = this.createEntry(this.formNewEntry);
 			entry.save();
 			this.formNewEntry.reset();
-			this.clearSelect("select-vehicle");			
+			this.clearSelect("select-vehicle");	
+			this.addLineTableEntry(entry, this.tbodyEntry);		
 		});
 	}
 	
@@ -128,18 +114,55 @@ class ParkingController{
 		let newClient = Formatter.JSONFormat(JSON.stringify(client));		
 		return new Entry(newClient);
 	}
+		
+	addLineTableClient(values, tbody){
+		let tr = this.getTrClient(values);
+		tbody.appendChild(tr);		
+	}
+
+	addLineTableEntry(values, tbody){
+		let tr = this.getTrEntry(values);
+		tbody.appendChild(tr);	
+	}
 	
+	getTrClient(dataClient, tr = null){
+		if(tr === null){
+            tr = document.createElement('tr');
+        } 
+        tr.dataset.client = JSON.stringify(dataClient);
+        tr.innerHTML =  `
+        <td>${dataClient.name + ' ' + dataClient.surname}</td>
+        <td>${dataClient.email}</td>
+		<td>${dataClient.adress}</td>
+		<td>${dataClient.city}</td>
+		<td>${Vehicle.format(dataClient.vehicle)}</td>`;
+        return tr;
+	}
+
+	getTrEntry(dataEntry, tr = null){
+		if(tr === null){
+            tr = document.createElement('tr');
+        } 
+		tr.dataset.entry = JSON.stringify(dataEntry);
+		console.log(dataEntry)
+        tr.innerHTML =  `
+        <td>${dataEntry._owner._name+ ' ' + dataEntry._owner._surname}</td>
+        <td>${dataEntry._owner._vehicle._licensePlate+ ' ' + dataEntry._owner._vehicle._model}</td>
+		<td>${dataEntry._date}</td>`
+        return tr;
+	}
+
 	listClients(){
 		let clients = this.returnClients();
 		clients.forEach(dataClient => {
-			let client = new Client();				
+			let client = new Client();							
 			client.loadFromJSON(dataClient);
-			this.addLineTable(client, this.tbodyClient);				
+			this.addLineTableClient(client, this.tbodyClient);				
 		});
 	}
 	
 	returnClients(){
-		return JSON.parse(localStorage.getItem("clients"));
+		return Formatter.JSONFormat(localStorage.getItem("clients"));
 	}
 	
 	returnEntries(){
@@ -159,33 +182,32 @@ class ParkingController{
 		let entries = this.returnEntries();
 		let licensePlate = [];
 		var index = -1;
-		
 		if(entries){
 			for(let i in entries){			
 				licensePlate[i] = entries[i].licensePlate;
 			}
 			
 			for(let i in clients){
-				if(licensePlate.indexOf(clients[i]._vehicle._licensePlate) === -1){
-					this.addOption("select-client", clients[i]._name);					
+				if(licensePlate.indexOf(clients[i].vehicle.licensePlate) === -1){
+					this.addOption("select-client", clients[i].name);					
 				}
 			}
 		}else{
 			for(let i in clients){
-				let fullName = clients[i]._name + " " + clients[i]._surname;
-				this.addOption("select-client", clients[i]._name, fullName);
+				let fullName = clients[i].name + " " + clients[i].surname;
+				this.addOption("select-client", clients[i].name, fullName);
 			}			
 		}
 		selectClient.addEventListener("change", () => {
         	let selectedClient = selectClient.options[selectClient.selectedIndex].value;
                for(let i in clients){
-					if(clients[i]._name === selectedClient) {
+					if(clients[i].name === selectedClient) {
                      index = i;
                   }
 				}
 				this.clearSelect("select-vehicle");
 				
-				this.addOption("select-vehicle", clients[index]._vehicle._licensePlate);				
+				this.addOption("select-vehicle", clients[index].vehicle.licensePlate);				
 		}	
 	)};
 	
