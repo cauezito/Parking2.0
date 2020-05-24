@@ -30,7 +30,6 @@ class ParkingController{
 		
 		if(!isValid) return false;
 		client.vehicle = vehicle;
-		console.log(client)
 		return new Client(client);
 	}
 
@@ -58,7 +57,6 @@ class ParkingController{
 		this.formNewClient.addEventListener("submit",(e)=>{
 			e.preventDefault();
 			let client = this.createClient(this.formNewClient);
-			console.log(client)
 			client.save();
 			this.formNewClient.reset();
 			this.addLineTableClient(client, this.tbodyClient);
@@ -71,6 +69,8 @@ class ParkingController{
 		let cardNewEntry = document.querySelector("div#card-new-entry");
 		let closeNewEntry = document.querySelector("a#close-new-entry");
 				
+		this.listEntries();
+
 		addNewEntry.addEventListener("click", () => {
 			cardEntry.classList.remove('m12')
 			cardEntry.classList.add('m6')
@@ -121,7 +121,8 @@ class ParkingController{
 	}
 
 	addLineTableEntry(values, tbody){
-		let tr = this.getTrEntry(values);
+		let entry = JSON.stringify(values);
+		let tr = this.getTrEntry(Formatter.JSONFormat(entry));
 		tbody.appendChild(tr);	
 	}
 	
@@ -144,11 +145,10 @@ class ParkingController{
             tr = document.createElement('tr');
         } 
 		tr.dataset.entry = JSON.stringify(dataEntry);
-		console.log(dataEntry)
         tr.innerHTML =  `
-        <td>${dataEntry._owner._name+ ' ' + dataEntry._owner._surname}</td>
-        <td>${dataEntry._owner._vehicle._licensePlate+ ' ' + dataEntry._owner._vehicle._model}</td>
-		<td>${dataEntry._date}</td>`
+        <td>${dataEntry.owner.name+ ' ' + dataEntry.owner.surname}</td>
+        <td>${dataEntry.owner.vehicle.licensePlate+ ' ' + dataEntry.owner.vehicle.model}</td>
+		<td>${dataEntry.date}</td>`
         return tr;
 	}
 
@@ -160,14 +160,22 @@ class ParkingController{
 			this.addLineTableClient(client, this.tbodyClient);				
 		});
 	}
+
+	listEntries(){
+		let entries = this.returnEntries();
+		entries.forEach(data => {
+			let entry = new Entry();						
+			entry.loadFromJSON(data);
+			this.addLineTableEntry(entry, this.tbodyEntry);				
+		});
+	}
 	
 	returnClients(){
 		return Formatter.JSONFormat(localStorage.getItem("clients"));
 	}
 	
 	returnEntries(){
-		let entries = JSON.parse(localStorage.getItem("entries"));	
-		return entries;
+		return Formatter.JSONFormat(localStorage.getItem("entries"));
 	}
 	
 	addOption(idSelect, value) {

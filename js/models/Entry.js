@@ -1,7 +1,9 @@
 class Entry{
 	constructor(client){
-		this._owner = new Client(client);
-		this._date = Formatter.dateFormat(new Date());		
+		if(client){
+			this._owner = new Client(client);
+			this._date = Formatter.dateFormat(new Date());	
+		}			
 	}
 	
 	get owner(){
@@ -33,4 +35,10 @@ class Entry{
 		}
 		return entries;
 	}
+
+	loadFromJSON(json){		
+        for(let name in json){
+			this[name] = json[name];					
+		}
+	}     
 }
