@@ -72,9 +72,6 @@ class ParkingController{
 		this.listEntries();
 
 		addNewEntry.addEventListener("click", () => {
-			cardEntry.classList.remove('m12')
-			cardEntry.classList.add('m6')
-			cardNewEntry.classList.remove('hide');
 			this.listInfoNewEntry();
 		});
 		
@@ -129,11 +126,11 @@ class ParkingController{
 	getTrClient(dataClient, tr = null){
 		if(tr === null){
             tr = document.createElement('tr');
-        } 
-        tr.dataset.client = JSON.stringify(dataClient);
-        tr.innerHTML =  `
-        <td>${dataClient.name + ' ' + dataClient.surname}</td>
-        <td>${dataClient.email}</td>
+      } 
+      tr.dataset.client = JSON.stringify(dataClient);
+      tr.innerHTML =  `
+   	<td>${dataClient.name + ' ' + dataClient.surname}</td>
+      <td>${dataClient.email}</td>
 		<td>${dataClient.adress}</td>
 		<td>${dataClient.city}</td>
 		<td>${Vehicle.format(dataClient.vehicle)}</td>`;
@@ -190,7 +187,7 @@ class ParkingController{
 		let entries = this.returnEntries();
 		let licensePlate = [];
 		var index = -1;
-		//console.log(clients)
+
 		if(entries){
 			for(let i in entries){			
 				licensePlate[i] = entries[i].owner.vehicle.licensePlate;
@@ -211,11 +208,10 @@ class ParkingController{
         	let selectedClient = selectClient.options[selectClient.selectedIndex].value;
                for(let i in clients){
 					if(clients[i].name === selectedClient) {
-                     index = i;
-                  }
+                  index = i;
+               }
 				}
-				this.clearSelect("select-vehicle");
-				
+				this.clearSelect("select-vehicle");				
 				this.addOption("select-vehicle", clients[index].vehicle.licensePlate);				
 		}	
 	)};

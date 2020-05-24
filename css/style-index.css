@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+div.nav-wrapper{
+    background-color: #303960;
+}
+
+body{
+    background-color: #f9f9f9;
+}
+
+.brand-logo{
+    font-family: 'Nanum Gothic', sans-serif;
+    margin: 0 0 0 15px;
+}
+
+a#nav.clients{
+    margin: 0 50px 0 0;
+}
+
+#select-vehicle{
+    margin: 20px 0 20px 0;
+}
+
+#card-new-entry{
+    margin:  40px 0 0 0;
+}
