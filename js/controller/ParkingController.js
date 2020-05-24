@@ -8,9 +8,9 @@ class ParkingController{
 		//this.addEventsClientsPage();
 	}
 	
-	addLineTable(values){
+	addLineTable(values, tbody){
 		let tr = this.getTr(values);
-		this.tbodyClient.appendChild(tr);		
+		tbody.appendChild(tr);		
 	}
 	
 	getTr(dataClient, tr = null){
@@ -76,7 +76,7 @@ class ParkingController{
 			let client = this.createClient(this.formNewClient);
 			client.save();
 			this.formNewClient.reset();
-			this.addLineTable(client);
+			this.addLineTable(client, this.tbodyClient);
 		});
 	}	
 	
@@ -102,8 +102,9 @@ class ParkingController{
 		this.formNewEntry.addEventListener("submit", (e) => {
 			e.preventDefault();
 			let entry = this.createEntry(this.formNewEntry);
-			console.log(entry);
 			entry.save();
+			this.formNewEntry.reset();
+			this.clearSelect("select-vehicle");			
 		});
 	}
 	
@@ -123,11 +124,8 @@ class ParkingController{
 		
 		//if(!isValid) return false;
 		
-		let client = Client.getOneClient(dataUser.client);
-		
-		
-		let newClient = Formatter.JSONFormat(JSON.stringify(client));
-		
+		let client = Client.getOneClient(dataUser.client);		
+		let newClient = Formatter.JSONFormat(JSON.stringify(client));		
 		return new Entry(newClient);
 	}
 	
@@ -136,7 +134,7 @@ class ParkingController{
 		clients.forEach(dataClient => {
 			let client = new Client();				
 			client.loadFromJSON(dataClient);
-			this.addLineTable(client);				
+			this.addLineTable(client, this.tbodyClient);				
 		});
 	}
 	
@@ -178,7 +176,7 @@ class ParkingController{
 				this.addOption("select-client", clients[i]._name, fullName);
 			}			
 		}
-		selectClient.addEventListener("blur", () => {
+		selectClient.addEventListener("change", () => {
         	let selectedClient = selectClient.options[selectClient.selectedIndex].value;
                for(let i in clients){
 					if(clients[i]._name === selectedClient) {
@@ -186,6 +184,7 @@ class ParkingController{
                   }
 				}
 				this.clearSelect("select-vehicle");
+				
 				this.addOption("select-vehicle", clients[index]._vehicle._licensePlate);				
 		}	
 	)};
