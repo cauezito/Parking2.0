@@ -1,8 +1,8 @@
 class Entry{
 	constructor(client){
 		this._owner = new Client(client);
-		this._vehicle = new Vehicle(vehicle);
-		this._date = new Date();		
+		this._vehicle = this._owner._vehicle;
+		this._date = Formatter.dateFormat(new Date());		
 	}
 	
 	get owner(){

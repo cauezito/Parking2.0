@@ -38,18 +38,16 @@ class ParkingController{
 				field.classList.add('invalid');
 				isValid = false;
 			}   
-			if(['licensePlate', 'make', 'model', 'color'].indexOf(field.name) 
+			/*if(['licensePlate', 'make', 'model', 'color'].indexOf(field.name) 
 			> -1 && field.value){
 				vehicle[field.name] = field.value;
-			}			
+			}*/		
 			client[field.name] = field.value;
 		});
 		
 		if(!isValid) return false;
 		
-		return new Client(
-			client.name, client.surname, client.email,
-		 	client.adress, client.city, vehicle);
+		return new Client(client);
 	}
 	
 	addEventsClientsPage(){
@@ -104,7 +102,8 @@ class ParkingController{
 		this.formNewEntry.addEventListener("submit", (e) => {
 			e.preventDefault();
 			let entry = this.createEntry(this.formNewEntry);
-			//entry.save();
+			console.log(entry);
+			entry.save();
 		});
 	}
 	
@@ -125,8 +124,11 @@ class ParkingController{
 		//if(!isValid) return false;
 		
 		let client = Client.getOneClient(dataUser.client);
-		console.log(client)
-		return new Entry(client);
+		
+		
+		let newClient = Formatter.JSONFormat(JSON.stringify(client));
+		
+		return new Entry(newClient);
 	}
 	
 	listClients(){
