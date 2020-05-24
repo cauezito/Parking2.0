@@ -190,9 +190,10 @@ class ParkingController{
 		let entries = this.returnEntries();
 		let licensePlate = [];
 		var index = -1;
+		//console.log(clients)
 		if(entries){
 			for(let i in entries){			
-				licensePlate[i] = entries[i].licensePlate;
+				licensePlate[i] = entries[i].owner.vehicle.licensePlate;
 			}
 			
 			for(let i in clients){
