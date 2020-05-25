@@ -23,7 +23,6 @@ class ParkingController{
 			> -1 && field.value){
 				vehicle[field.name] = field.value;
 			}
-
 			client[field.name] = field.value;
 		});
 		
@@ -68,10 +67,10 @@ class ParkingController{
 		let cardEntry = document.querySelector("div#card-entry");
 		let cardNewEntry = document.querySelector("div#card-new-entry");
 		let closeNewEntry = document.querySelector("a#close-new-entry");
-				
 		this.listEntries();
 
 		addNewEntry.addEventListener("click", () => {
+			//this.clearSelect("select-client");
 			this.listInfoNewEntry();
 		});
 		
@@ -118,6 +117,7 @@ class ParkingController{
 	}
 
 	addLineTableEntry(values, tbody){
+		console.log(tbody)
 		let entry = JSON.stringify(values);
 		let tr = this.getTrEntry(Formatter.JSONFormat(entry));
 		tbody.appendChild(tr);	
@@ -160,6 +160,19 @@ class ParkingController{
 
 	listEntries(){
 		let entries = this.returnEntries();
+			let selectClient = document.getElementById("select-client")
+			console.log(selectClient.length)
+			if(selectClient.length === 1){
+				let elemensToast = document.querySelector("#add-new-entry");
+				elemensToast.addEventListener("click", () =>{
+					let instanceToast = 	M.toast({html: 'Não há cliente disponível para uma nova entrada.'
+						, classes: 'rounded'});
+				});
+			
+			} else {
+				console.log('uh')
+			}
+		
 		entries.forEach(data => {
 			let entry = new Entry();						
 			entry.loadFromJSON(data);
@@ -168,11 +181,15 @@ class ParkingController{
 	}
 	
 	returnClients(){
-		return Formatter.JSONFormat(localStorage.getItem("clients"));
+		let clients = Formatter.JSONFormat(localStorage.getItem("clients"));
+		if(clients) return clients
+		else return clients = [];
 	}
 	
 	returnEntries(){
-		return Formatter.JSONFormat(localStorage.getItem("entries"));
+		let entries = Formatter.JSONFormat(localStorage.getItem("entries"));
+		if(entries) return entries
+		else return entries = [];
 	}
 	
 	addOption(idSelect, value) {

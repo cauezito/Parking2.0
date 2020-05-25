@@ -5,10 +5,9 @@ div.nav-wrapper{
 
 body{
     background-image: url("../img/estrada.jpg");
-
     background-repeat: no-repeat;
     background-size: cover;
-}
+}                            
 
 .brand-logo{
     font-family: 'Nanum Gothic', sans-serif;
