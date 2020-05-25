@@ -4,7 +4,10 @@ div.nav-wrapper{
 }
 
 body{
-    background-color: #f9f9f9;
+    background-image: url("../img/estrada.jpg");
+
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .brand-logo{
