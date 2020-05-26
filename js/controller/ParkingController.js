@@ -59,6 +59,7 @@ class ParkingController{
 			client.save();
 			this.formNewClient.reset();
 			this.addLineTableClient(client, this.tbodyClient);
+			this.refreshOption();
 		});
 	}	
 
@@ -87,10 +88,20 @@ class ParkingController{
 			entry.save();
 			this.formNewEntry.reset();
 			this.clearSelect("select-vehicle");	
-			this.addLineTableEntry(entry, this.tbodyEntry);		
+			this.addLineTableEntry(entry, this.tbodyEntry);	
+			this.refreshSelect("select-client", entry.owner._name);	
 		});
 	}
-	
+
+	refreshSelect(sel, name){
+		let select = document.getElementById(sel);
+		for(let i = 0; i < select.length; i++){			
+			if(select.options[i].value === name){
+				select.remove(i);
+			}
+		}
+	}
+
 	createEntry(formNewEntry){
 		let dataUser = [];
 		let isValid = true;
@@ -118,7 +129,6 @@ class ParkingController{
 	}
 
 	addLineTableEntry(values, tbody){
-		console.log(tbody)
 		let entry = JSON.stringify(values);
 		let tr = this.getTrEntry(Formatter.JSONFormat(entry));
 		tbody.appendChild(tr);	
@@ -130,8 +140,8 @@ class ParkingController{
       } 
       tr.dataset.client = JSON.stringify(dataClient);
       tr.innerHTML =  `
-   	<td>${dataClient.name + ' ' + dataClient.surname}</td>
-      <td>${dataClient.email}</td>
+   		<td>${dataClient.name + ' ' + dataClient.surname}</td>
+      	<td>${dataClient.email}</td>
 		<td>${dataClient.adress}</td>
 		<td>${dataClient.city}</td>
 		<td>${Vehicle.format(dataClient.vehicle)}</td>`;
@@ -160,8 +170,7 @@ class ParkingController{
 	}
 
 	listEntries(){
-		let entries = this.returnEntries();
-			
+		let entries = this.returnEntries();			
 		entries.forEach(data => {
 			let entry = new Entry();						
 			entry.loadFromJSON(data);
@@ -231,14 +240,14 @@ class ParkingController{
 	}
 
 	showMessageError(){
-			let selectClient = document.getElementById("select-client");
-			if(selectClient.length === 1){
-				let elemensToast = document.querySelector("div#modalNewEntry");
-				elemensToast.addEventListener("focus", () =>{
-					let instanceToast = 	M.toast({html:
-						 'There are no customers available. Register a new one!'
-						, classes: 'rounded'});
-				});
-			}
+		let selectClient = document.getElementById("select-client");
+		if(selectClient.length === 1){
+			let elemensToast = document.querySelector("div#modalNewEntry");
+			elemensToast.addEventListener("focus", () =>{
+				let instanceToast = M.toast({html:
+					'There are no customers available. Register a new one!',
+					classes: 'rounded'});
+			});
+		}
 	}
 }
