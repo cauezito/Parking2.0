@@ -72,6 +72,7 @@ class ParkingController{
 		addNewEntry.addEventListener("click", () => {
 			//this.clearSelect("select-client");
 			this.listInfoNewEntry();
+			this.showMessageError();
 		});
 		
 		closeNewEntry.addEventListener("click", () => {
@@ -160,19 +161,7 @@ class ParkingController{
 
 	listEntries(){
 		let entries = this.returnEntries();
-			let selectClient = document.getElementById("select-client")
-			console.log(selectClient.length)
-			if(selectClient.length === 1){
-				let elemensToast = document.querySelector("#add-new-entry");
-				elemensToast.addEventListener("click", () =>{
-					let instanceToast = 	M.toast({html: 'Não há cliente disponível para uma nova entrada.'
-						, classes: 'rounded'});
-				});
 			
-			} else {
-				console.log('uh')
-			}
-		
 		entries.forEach(data => {
 			let entry = new Entry();						
 			entry.loadFromJSON(data);
@@ -239,5 +228,17 @@ class ParkingController{
 	   	for(i = L; i >= 0; i--) {
 	      select.remove(i);
 	   	}
+	}
+
+	showMessageError(){
+			let selectClient = document.getElementById("select-client");
+			if(selectClient.length === 1){
+				let elemensToast = document.querySelector("div#modalNewEntry");
+				elemensToast.addEventListener("focus", () =>{
+					let instanceToast = 	M.toast({html:
+						 'There are no customers available. Register a new one!'
+						, classes: 'rounded'});
+				});
+			}
 	}
 }
