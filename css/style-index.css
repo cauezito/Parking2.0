@@ -51,7 +51,7 @@ a#nav.clients{
 @media (min-width: 1000px){
     tbody {
         display:block;
-        height:125px;
+        height:165px;
         overflow:auto;
     }
     thead, tbody tr {
