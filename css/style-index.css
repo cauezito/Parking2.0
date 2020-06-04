@@ -14,6 +14,27 @@ body{
     margin: 0 0 0 15px;
 }
 
+#actions{
+    margin: 45px 0 0 0;
+    background-color:transparent;
+    height: 100px;
+    
+}
+
+.card.medium{
+    height: 333px;
+}
+
+div.close-service > *{
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.btn-action{
+    margin-bottom: -10px;
+}
+
 a#nav.clients{
     margin: 0 50px 0 0;
 }
