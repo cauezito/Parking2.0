@@ -33,12 +33,7 @@ class EntriesController {
 
         submitCloseService.addEventListener("click", () => {
             let selectClient = document.querySelector("select#select-client-remove");
-
-            if(!this.checkSelect(selectClient)){
-                M.toast({html: 'Please, select a client!'})
-            } else {
-                //remove record
-            }
+               
         });
 
         this.formNewEntry.addEventListener("submit", (e) => {
@@ -215,13 +210,7 @@ class EntriesController {
         let btnSubmit = document.getElementById("submit-new-entry");
 
         if (selectClient.length === 1) {
-            let elemensToast = document.querySelector("div#modalNewEntry");
-            elemensToast.addEventListener("focus", () => {
-                let instanceToast = M.toast({
-                    html: 'There are no customers available. Register a new one!',
-                    classes: 'rounded'
-                });
-            });
+            M.toast({html: 'There are no customers available. Register a new one!'})
 
             btnSubmit.disabled = true;
         }
