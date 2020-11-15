@@ -212,6 +212,8 @@ class EntriesController {
 
     showMessageError() {
         let selectClient = document.getElementById("select-client");
+        let btnSubmit = document.getElementById("submit-new-entry");
+
         if (selectClient.length === 1) {
             let elemensToast = document.querySelector("div#modalNewEntry");
             elemensToast.addEventListener("focus", () => {
@@ -220,6 +222,8 @@ class EntriesController {
                     classes: 'rounded'
                 });
             });
+
+            btnSubmit.disabled = true;
         }
     }
 }
