@@ -11,6 +11,8 @@ class EntriesController {
         let cardNewEntry = document.querySelector("div#card-new-entry");
         let closeNewEntry = document.querySelector("a#close-new-entry");
         let closeService = document.querySelector("a#close-service");
+        let submitCloseService = document.querySelector("button#submit-close-entry");
+
         this.listEntries();
 
         addNewEntry.addEventListener("click", () => {
@@ -27,6 +29,16 @@ class EntriesController {
             cardEntry.classList.remove('m6');
             cardEntry.classList.add('m12');
             cardNewEntry.classList.add('hide');
+        });
+
+        submitCloseService.addEventListener("click", () => {
+            let selectClient = document.querySelector("select#select-client-remove");
+
+            if(!this.checkSelect(selectClient)){
+                M.toast({html: 'Please, select a client!'})
+            } else {
+                //remove record
+            }
         });
 
         this.formNewEntry.addEventListener("submit", (e) => {
@@ -177,6 +189,13 @@ class EntriesController {
 
     };
 
+    checkSelect(select){
+        if(select.selectedIndex === 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     clearSelect(idSelect) {
         let select = document.getElementById(idSelect);
