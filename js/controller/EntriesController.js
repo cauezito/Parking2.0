@@ -165,28 +165,33 @@ class EntriesController {
         let selectClient = document.querySelector("select#select-client-remove");
         let clients = this.returnClients();
         let entries = this.returnEntries();
-        let licensePlate = [];
+        let event = new Event('change');
         var index = -1;
 
         if (entries) {
+            this.clearSelect("select-client-remove");
+            
+
             for (let i in entries) {
                 this.addOption("select-client-remove", entries[i].owner.name);
             }
-        }
 
-        selectClient.addEventListener("change", () => {
-            let selectedClient = selectClient.options[selectClient.selectedIndex].value;
-            for (let i in clients) {
-                if (clients[i].name === selectedClient) {
-                    index = i;
+            selectClient.addEventListener("change", () => {
+                let selectedClient = selectClient.options[selectClient.selectedIndex].value;
+                for (let i in clients) {
+                    if (clients[i].name === selectedClient) {
+                        index = i;
+                    }
                 }
-            }
-
-            this.clearSelect("select-vehicle-remove");
-            this.addOption("select-vehicle-remove", clients[index].vehicle.licensePlate);
-        });
-
-
+    
+                this.clearSelect("select-vehicle-remove");
+                this.addOption("select-vehicle-remove", clients[index].vehicle.licensePlate);
+            });
+    
+            selectClient.dispatchEvent(event);
+            
+        }        
+        
     };
 
     checkSelect(select){
